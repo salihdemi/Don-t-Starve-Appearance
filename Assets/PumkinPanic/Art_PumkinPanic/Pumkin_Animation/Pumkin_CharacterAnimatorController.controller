@@ -63,7 +63,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: bb97004bdca0def4cb74b144d45d67d7, type: 2}
+    m_Motion: {fileID: 7400000, guid: ec28e5062c7a4af4b84307befcb66791, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
@@ -71,7 +71,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e8c6986a966124f4d90386ec38b8588c, type: 2}
+    m_Motion: {fileID: 7400000, guid: 0d4a8e8c5bb8c4f4a8d246e1044f453c, type: 2}
     m_Threshold: 0.33333334
     m_Position: {x: 0, y: 1}
     m_TimeScale: 1
@@ -107,7 +107,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CharacterAnimatorController
+  m_Name: Pumkin_CharacterAnimatorController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Blend
@@ -181,7 +181,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: dcaa9e1b869231a43a48b48807b4b3e2, type: 2}
+    m_Motion: {fileID: 7400000, guid: 9b21dd6acaa34e34ab478eef4e58356b, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: -1}
     m_TimeScale: 1
@@ -189,7 +189,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 527af18d6167a304b9535374f06915c5, type: 2}
+    m_Motion: {fileID: 7400000, guid: 50b770b57c568ea4eadbe467335c8dcf, type: 2}
     m_Threshold: 0.33333334
     m_Position: {x: 0, y: 1}
     m_TimeScale: 1
@@ -197,7 +197,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: bd3aa7d5e5e40ed4294b95683a307154, type: 2}
+    m_Motion: {fileID: 7400000, guid: 68206bd51362e664cb72f6deed0bf17c, type: 2}
     m_Threshold: 0.6666667
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -205,7 +205,7 @@ BlendTree:
     m_DirectBlendParameter: Blend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 146be0d52cf367d4eb50c3c8b20fbc82, type: 2}
+    m_Motion: {fileID: 7400000, guid: 4f0457af00741a841a98d3d36c8b2044, type: 2}
     m_Threshold: 1
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
