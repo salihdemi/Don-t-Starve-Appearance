@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DST_PlayerMovement : MonoBehaviour
+public class DST_DirectionalMovement : MonoBehaviour
 {
     public float walkSpeed = 5f;
     public Animator anim;
-    public Transform cameraTransform; // Inspector'dan Main Camera'yý sürükle
+    public Transform cameraTransform;
 
     private Rigidbody rb;
+    // Karakterin dÃ¼nyadaki mutlak bakÄ±ÅŸ yÃ¶nÃ¼nÃ¼ saklar (BaÅŸlangÄ±Ã§ta ileri baksÄ±n)
+    private Vector3 worldLookDirection = Vector3.forward; 
 
     void Start()
     {
@@ -19,60 +21,60 @@ public class DST_PlayerMovement : MonoBehaviour
     void Update()
     {
         Vector2 input = GetInput();
-
-        // 1. ADIM: Kameranýn bakýþ açýsýna göre hareket yönlerini hesapla
+        
+        // 1. DÃœNYA HAREKETÄ°
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
-
-        // Y eksenini sýfýrlýyoruz (Karakterin yere gömülmemesi veya uçmamasý için)
         camForward.y = 0;
         camRight.y = 0;
         camForward.Normalize();
         camRight.Normalize();
 
-        // 2. ADIM: Hedef hareket yönünü oluþtur
         Vector3 moveDirection = (camForward * input.y + camRight * input.x).normalized;
 
-        // 3. ADIM: Fiziksel Hareket
-        if (rb != null)
+        if (input.magnitude > 0.1f)
         {
-            rb.MovePosition(rb.position + moveDirection * walkSpeed * Time.deltaTime);
-        }
-        else
-        {
-            transform.position += moveDirection * walkSpeed * Time.deltaTime;
+            // Hareket ediyorsak baktÄ±ÄŸÄ±mÄ±z yÃ¶nÃ¼ gÃ¼ncelle
+            worldLookDirection = moveDirection;
+
+            if (rb != null)
+                rb.MovePosition(rb.position + moveDirection * walkSpeed * Time.deltaTime);
+            else
+                transform.position += moveDirection * walkSpeed * Time.deltaTime;
         }
 
-        // 4. ADIM: Animasyon için Lokal Yön Hesaplama (Ön-Arka-Yan)
-        if (anim != null)
-        {
-            UpdateAnimations(input, moveDirection);
-        }
+        // 2. HER KAREDE HESAPLA (Hareket etmese bile!)
+        // Bu sayede karakter dururken Q-E ile kamera dÃ¶nerse animasyon deÄŸiÅŸir.
+        UpdateDSTAnimations(input.magnitude);
+    }
+
+    void UpdateDSTAnimations(float currentSpeed)
+    {
+        if (anim == null) return;
+
+        // KameranÄ±n ileri bakÄ±ÅŸ yÃ¶nÃ¼
+        Vector3 camDir = cameraTransform.forward;
+        camDir.y = 0;
+        camDir.Normalize();
+
+        // SignedAngle: Kamera yÃ¶nÃ¼ ile karakterin dÃ¼nya bakÄ±ÅŸ yÃ¶nÃ¼ arasÄ±ndaki aÃ§Ä±
+        float angle = Vector3.SignedAngle(camDir, worldLookDirection, Vector3.up);
+
+        // Sin/Cos ile Blend Tree parametrelerini bul (-1 ile 1 arasÄ±)
+        float animX = Mathf.Sin(angle * Mathf.Deg2Rad);
+        float animZ = Mathf.Cos(angle * Mathf.Deg2Rad);
+
+        // DeÄŸerleri her zaman set ediyoruz
+        anim.SetFloat("X", animX);
+        anim.SetFloat("Z", animZ);
+        anim.SetFloat("Speed", currentSpeed);
     }
 
     private Vector2 GetInput()
     {
         if (Keyboard.current == null) return Vector2.zero;
-
         float x = Keyboard.current.dKey.isPressed ? 1 : (Keyboard.current.aKey.isPressed ? -1 : 0);
-        float z = Keyboard.current.wKey.isPressed ? 1 : (Keyboard.current.sKey.isPressed ? -1 : 0);
-        return new Vector2(x, z).normalized;
-    }
-
-    private void UpdateAnimations(Vector2 input, Vector3 moveDir)
-    {
-        // Karakter hareket etmiyorsa hýzý sýfýrla ama son bakýþ yönünü koru
-        anim.SetFloat("Speed", input.magnitude);
-
-        if (input.magnitude > 0.1f)
-        {
-            /* 
-               DST mantýðýnda animatör parametreleri genellikle þöyledir:
-               X: -1 (Sol), 1 (Sað)
-               Z: -1 (Ön/Aþaðý), 1 (Arka/Yukarý)
-            */
-            anim.SetFloat("X", input.x, 0.05f, Time.deltaTime);
-            anim.SetFloat("Z", input.y, 0.05f, Time.deltaTime);
-        }
+        float y = Keyboard.current.wKey.isPressed ? 1 : (Keyboard.current.sKey.isPressed ? -1 : 0);
+        return new Vector2(x, y).normalized;
     }
 }
